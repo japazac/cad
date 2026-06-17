@@ -533,7 +533,15 @@ case 'comandos_base':
 
             try {
                 //const response = await fetch('http://127.0.0.1:8000/chat', { method: 'POST', body: formData });
-                const response = await fetch(' https://c2be-2001-1388-4a01-71a7-247d-e814-7ed0-cff6.ngrok-free.app/chat', { method: 'POST', body: formData });
+                //const response = await fetch(' https://c2be-2001-1388-4a01-71a7-247d-e814-7ed0-cff6.ngrok-free.app/chat', { method: 'POST', body: formData });
+                const response = await fetch('https://c2be-2001-1388-4a01-71a7-247d-e814-7ed0-cff6.ngrok-free.app/chat', { 
+    method: 'POST', 
+    headers: {
+        // Esta cabecera le dice a ngrok: "Oye, sé lo que hago, no me muestres la pantalla de advertencia"
+        'ngrok-skip-browser-warning': 'true'
+    },
+    body: formData 
+});
                 const data = await response.json();
                 chatBox.innerHTML += `
                     <div class="flex items-start gap-3">
