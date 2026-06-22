@@ -224,7 +224,7 @@
         async function updateStats() {
             try {
                 //const res = await fetch(`http://127.0.0.1:8000/stats/${userId}`);
-                const res = await fetch(`https://c2be-2001-1388-4a01-71a7-247d-e814-7ed0-cff6.ngrok-free.app/${userId}`);
+                const res = await fetch(`https://curly-space-lamp-wvrp76jq9qwp2v9gg-8000.app.github.dev/${userId}`);
                 const data = await res.json();
                 document.getElementById('user-xp').innerText = `${data.xp} XP`;
                 document.getElementById('user-level').innerText = data.level;
@@ -533,8 +533,8 @@ case 'comandos_base':
 
             try {
                 //const response = await fetch('http://127.0.0.1:8000/chat', { method: 'POST', body: formData });
-                //const response = await fetch(' https://c2be-2001-1388-4a01-71a7-247d-e814-7ed0-cff6.ngrok-free.app/chat', { method: 'POST', body: formData });
-                const response = await fetch('https://c2be-2001-1388-4a01-71a7-247d-e814-7ed0-cff6.ngrok-free.app/chat', { 
+                //const response = await fetch('https://curly-space-lamp-wvrp76jq9qwp2v9gg-8000.app.github.dev/chat', { method: 'POST', body: formData });
+                const response = await fetch('https://curly-space-lamp-wvrp76jq9qwp2v9gg-8000.app.github.dev/chat', { 
     method: 'POST', 
     headers: {
         // Esta cabecera le dice a ngrok: "Oye, sé lo que hago, no me muestres la pantalla de advertencia"
