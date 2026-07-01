@@ -1,0 +1,562 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CAD-Audit Pro+ | Investigación CAD</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        #chat-box { height: 60vh; scroll-behavior: smooth; }
+        .prose strong { color: #1e293b; font-weight: 700; }
+        #preview-area { transition: all 0.2s ease-in-out; }
+        .vision-btn {
+            background: white; border: 1px solid #e2e8f0; color: #475569;
+            padding: 10px; border-radius: 12px; font-size: 11px; font-weight: 600;
+            text-align: left; transition: all 0.2s; display: flex; align-items: center; gap: 8px;
+        }
+        .vision-btn:hover { background: #eff6ff; border-color: #bfdbfe; color: #2563eb; transform: translateY(-1px); }
+        .vision-btn:active { transform: translateY(0px); }
+    </style>
+</head>
+<body class="bg-slate-100 font-sans p-4">
+    <div class="max-w-[1500px] mx-auto grid grid-cols-[1fr,320px] gap-4">
+        
+        <div class="flex flex-col">
+            <header class="bg-slate-900 text-white p-5 rounded-t-2xl shadow-xl flex justify-between items-center border-b-4 border-blue-600">
+                <div>
+                    <h1 class="text-2xl font-black tracking-tighter italic">CAD-Audit Pro<span class="text-blue-500">+</span></h1>
+                    <p class="text-[9px] uppercase tracking-widest text-slate-400 font-bold">CAD-Audit Pro+, un sistema que integra el modelado cognitivo del alumno con la validación normativa de planos para producción.</p>
+                </div>
+                <div class="text-right border-r border-slate-700 pr-5">
+                    <span id="user-level" class="block text-[10px] uppercase font-bold text-blue-400">Novato CAD</span>
+                    <span id="user-xp" class="text-xl font-mono font-bold">010 XP</span>
+                </div>
+            </header>
+
+<div class="bg-slate-200/60 border-x border-slate-300">
+    <div class="px-3 pt-2">
+        <h4 class="text-[9px] uppercase tracking-tighter font-black text-slate-500 flex items-center gap-1">
+            <span class="w-1 h-3 bg-blue-500 rounded-full"></span>
+            Referencia Técnica y Estándares CAD
+        </h4>
+    </div>
+
+                <div class="p-2 flex gap-2 overflow-x-auto no-scrollbar">
+                    <button onclick="showReference('coordenadas')" class="bg-white hover:bg-blue-50 text-slate-700 px-3 py-1.5 rounded-lg text-[10px] font-bold shadow-sm border border-slate-300 whitespace-nowrap flex items-center gap-1.5">
+                        <span class="text-blue-600">📍</span> COORDENADAS
+                    </button>
+                    <button onclick="showReference('escalas')" class="bg-white hover:bg-blue-50 text-slate-700 px-3 py-1.5 rounded-lg text-[10px] font-bold shadow-sm border border-slate-300 whitespace-nowrap flex items-center gap-1.5">
+                        <span class="text-blue-600">📏</span> ESCALAS ISO
+                    </button>
+                    <button onclick="showReference('graficacion')" class="bg-white hover:bg-blue-50 text-slate-700 px-3 py-1.5 rounded-lg text-[10px] font-bold shadow-sm border border-slate-300 whitespace-nowrap flex items-center gap-1.5">
+                        <span class="text-blue-600">✏️</span> GRAFICACIÓN
+                    </button>
+                    <button onclick="showReference('capas_bloques')" class="bg-white hover:bg-blue-50 text-slate-700 px-3 py-1.5 rounded-lg text-[10px] font-bold shadow-sm border border-slate-300 whitespace-nowrap flex items-center gap-1.5">
+                        <span class="text-blue-600">🗂️</span> CAPAS/BLOQUES
+                    </button>
+                    <button onclick="showReference('dimensionamiento')" class="bg-white hover:bg-blue-50 text-slate-700 px-3 py-1.5 rounded-lg text-[10px] font-bold shadow-sm border border-slate-300 whitespace-nowrap flex items-center gap-1.5">
+                        <span class="text-blue-600">📐</span> ACOTADO
+                    </button>
+                </div>
+            </div>
+
+            <div id="chat-box" class="bg-white p-6 overflow-y-auto border-x border-slate-200 shadow-inner space-y-4">
+                <div class="flex items-start gap-3">
+                    <div class="bg-blue-600 text-white p-2 rounded-lg text-xs font-bold">TB+</div>
+                    <div class="bg-blue-50 p-4 rounded-xl rounded-tl-none border border-blue-100 shadow-sm prose prose-slate text-sm">
+                        Sistema multimodal activo. ¿Qué análisis deseas realizar hoy?
+                    </div>
+                </div>
+            </div>
+
+            <div id="preview-area" class="hidden bg-white border-x border-slate-200 p-3 flex items-center gap-3 border-t">
+                <div class="relative">
+                    <img id="img-preview" src="" class="h-16 w-16 object-cover rounded-md border-2 border-blue-500">
+                    <button onclick="clearImage()" class="absolute -top-1.5 -right-1.5 bg-red-500 text-white rounded-full w-4 h-4 text-xs font-bold flex items-center justify-center">×</button>
+                </div>
+                <p id="file-name" class="text-xs text-slate-500 truncate font-mono"></p>
+            </div>
+
+            <div class="bg-white p-4 rounded-b-2xl border-t-2 border-slate-100 shadow-2xl flex gap-3 items-center">
+                <label class="cursor-pointer bg-slate-50 hover:bg-blue-50 p-3.5 rounded-xl border-2 border-slate-200 hover:border-blue-300 transition-all group shadow-inner">
+                    <input type="file" id="file-input" class="hidden" accept="image/*" onchange="handleFileSelect(event)">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-slate-400 group-hover:text-blue-600 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                </label>
+<textarea id="user-input" rows="3" onkeypress="if(event.key==='Enter' && !event.shiftKey) { event.preventDefault(); sendMessage(); }" placeholder="Describe tu duda o usa el panel derecho..." 
+    class="flex-1 p-4 rounded-xl bg-slate-50 border-2 border-slate-200 focus:border-blue-400 outline-none text-sm transition-all resize-none"></textarea>
+                <button onclick="sendMessage()" class="bg-blue-600 hover:bg-blue-700 text-white px-7 py-4 rounded-xl font-black transition-all shadow-lg active:scale-95">ENVIAR</button>
+            </div>
+        </div>
+
+        <div class="bg-white p-5 rounded-2xl shadow-xl border border-slate-200 self-start space-y-6 overflow-y-auto max-h-[85vh]">
+            
+            <div class="border-t pt-4 mt-4">
+                <h3 class="text-[10px] uppercase tracking-wider font-black text-slate-700 mb-3 border-b pb-1 italic">I. Módulo Comandos AutoCAD </h3>
+                <div class="grid grid-cols-2 gap-2">
+                    <button onclick="visualAnalysis('comandos_base')" class="vision-btn !p-2">
+                        <span>✏️</span> Dibujo Base (Draw)
+                    </button>
+                    <button onclick="visualAnalysis('comandos_edicion')" class="vision-btn !p-2">
+                        <span>✂️</span> Edición (Modify)
+                    </button>
+                    <button onclick="visualAnalysis('comandos_anotacion')" class="vision-btn !p-2">
+                        <span>📐</span> Acotado (Annotate)
+                    </button>
+                    <button onclick="visualAnalysis('comandos_bloques')" class="vision-btn !p-2">
+                        <span>🧩</span> Bloques y Capas
+                    </button>
+                </div>
+            </div>
+
+            <div>
+                <h3 class="text-[10px] uppercase tracking-wider font-bold text-blue-600 mb-2 border-b pb-1">II. Módulo de visión computacional</h3>
+                <div class="grid grid-cols-2 gap-2"">
+                    <button onclick="visualAnalysis('cotas_iso')" class="vision-btn !p-2"><span>📏</span> Verificación de Cotas e Indeterminaciones (ISO 2768)</button>
+                    <button onclick="visualAnalysis('tolerancias_geometricas')" class="vision-btn !p-2"><span>📐</span> Análisis de Tolerancias Geométricas (GD&T)</button>
+                    <button onclick="visualAnalysis('vistas_proyeccion')" class="vision-btn !p-2"><span>🔄</span> Validación de Vistas, Proyecciones y Cortes</button>
+                    <button onclick="visualAnalysis('auditoria_normas')" class="vision-btn !p-2"><span>🔄</span> Auditoría de Normas</button>
+                </div>
+            </div>
+
+            <div class="bg-white p-3 rounded-lg shadow-sm border border-emerald-100">
+                <h3 class="text-[10px] uppercase tracking-wider font-bold text-emerald-600 mb-3 border-b border-emerald-100 pb-1">
+                    III. Módulo Manufactura e Ingeniería
+                </h3>
+                
+                <div class="grid grid-cols-2 gap-2">
+                    
+                    <div class="space-y-2">
+                        <button onclick="visualAnalysis('procesos_acabados')" class="vision-btn w-full text-left flex items-center gap-2 p-2 hover:bg-emerald-50 rounded transition-colors border border-transparent hover:border-emerald-200">
+                            <span class="text-sm">🏭</span> 
+                            <span class="text-[11px] font-medium">Procesos y Acabados</span>
+                        </button>
+                        
+                        <button onclick="visualAnalysis('bom_materiales')" class="vision-btn w-full text-left flex items-center gap-2 p-2 hover:bg-emerald-50 rounded transition-colors border border-transparent hover:border-emerald-200">
+                            <span class="text-sm">📋</span> 
+                            <span class="text-[11px] font-medium">Lista de Materiales</span>
+                        </button>
+                        
+                        <button onclick="visualAnalysis('ajustes_interferencia')" class="vision-btn w-full text-left flex items-center gap-2 p-2 hover:bg-emerald-50 rounded transition-colors border border-transparent hover:border-emerald-200">
+                            <span class="text-sm">⚙️</span> 
+                            <span class="text-[11px] font-medium">Ajustes e Interferencia</span>
+                        </button>
+
+                        <button onclick="visualAnalysis('gdt_tolerancias')" class="vision-btn w-full text-left flex items-center gap-2 p-2 hover:bg-emerald-50 rounded transition-colors border border-transparent hover:border-emerald-200">
+                            <span class="text-sm">📐</span> 
+                            <span class="text-[11px] font-medium">GD&T (Geométrica)</span>
+                        </button>
+                    </div>
+
+                    <div class="space-y-2">
+                        <button onclick="visualAnalysis('dfm_manufacturabilidad')" class="vision-btn w-full text-left flex items-center gap-2 p-2 hover:bg-emerald-50 rounded transition-colors border border-transparent hover:border-emerald-200">
+                            <span class="text-sm">🛠️</span> 
+                            <span class="text-[11px] font-medium">DFM (Manufactura)</span>
+                        </button>
+                        
+                        <button onclick="visualAnalysis('ensamblaje_sujecion')" class="vision-btn w-full text-left flex items-center gap-2 p-2 hover:bg-emerald-50 rounded transition-colors border border-transparent hover:border-emerald-200">
+                            <span class="text-sm">🔩</span> 
+                            <span class="text-[11px] font-medium">Ensamblaje y Sujeción</span>
+                        </button>
+                        
+                        <button onclick="visualAnalysis('normativa_trazabilidad')" class="vision-btn w-full text-left flex items-center gap-2 p-2 hover:bg-emerald-50 rounded transition-colors border border-transparent hover:border-emerald-200">
+                            <span class="text-sm">🏷️</span> 
+                            <span class="text-[11px] font-medium">Marcado y Normativa</span>
+                        </button>
+
+                        <div class="flex items-center justify-center p-2 bg-emerald-50 rounded-md border border-emerald-100">
+                            <span class="text-[9px] text-emerald-700 font-bold uppercase italic">Audit Status: Ready</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div>
+                <h3 class="text-[10px] uppercase tracking-wider font-bold text-orange-600 mb-2 border-b pb-1">IV. Módulo Estándares y Simetría</h3>
+                <div class="space-y-2">
+                    <button onclick="visualAnalysis('capas')" class="vision-btn w-full"><span>✏️</span> Jerarquía de Líneas</button>
+                    <button onclick="visualAnalysis('bloques')" class="vision-btn w-full"><span>🧩</span> Bloques y Simetría</button>
+                </div>
+            </div>
+
+            <div class="bg-slate-100 p-3 rounded-lg border text-center">
+                <p class="text-[10px] text-slate-500 font-bold uppercase mb-1">Estado de Imagen</p>
+                <span id="img-status" class="text-xs font-medium text-red-600 bg-red-100 px-2 py-0.5 rounded-full">No cargada</span>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const userId = "Juan_Pablo_Investigador";
+
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('img-preview').src = e.target.result;
+                    document.getElementById('file-name').innerText = file.name;
+                    document.getElementById('preview-area').classList.remove('hidden');
+                    const status = document.getElementById('img-status');
+                    status.innerText = "Cargada y Lista";
+                    status.classList.replace('text-red-600', 'text-emerald-700');
+                    status.classList.replace('bg-red-100', 'bg-emerald-100');
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function clearImage() {
+            document.getElementById('file-input').value = "";
+            document.getElementById('preview-area').classList.add('hidden');
+            const status = document.getElementById('img-status');
+            status.innerText = "No cargada";
+            status.classList.replace('text-emerald-700', 'text-red-600');
+            status.classList.replace('bg-emerald-100', 'bg-red-100');
+        }
+
+        async function updateStats() {
+            try {
+                //const res = await fetch(`http://127.0.0.1:8000/stats/${userId}`);
+                const res = await fetch(`https://curly-space-lamp-wvrp76jq9qwp2v9gg-8000.app.github.dev/${userId}`);
+                const data = await res.json();
+                document.getElementById('user-xp').innerText = `${data.xp} XP`;
+                document.getElementById('user-level').innerText = data.level;
+            } catch (e) { }
+        }
+
+        function quickAction(text) {
+            document.getElementById('user-input').value = text;
+            sendMessage();
+        }
+
+       function showReference(type) {
+            let refContent = "";
+            switch(type) {
+                case 'coordenadas':
+                    refContent = `GUÍA DE SISTEMAS DE COORDENADAS:
+                     Define y Compara el uso de sistemas de coordenadas en AutoCAD (Absolutas vs Relativas vs Polares) bajo un contexto estricto de inspección industrial y precisión mecánica. La respuesta debe seguir esta jerarquía:
+                    Sigue estrictamente este protocolo:
+                    a. Define y Compara: Establece la diferencia técnica entre el uso de coordenadas absolutas para fijar centros de rotación inamovibles (WCS) frente al uso de coordenadas relativas para el trazado secuencial de perfiles de desgaste sin arrastre de errores.
+
+                    b. Ejemplos de Sintaxis: Proporciona ejemplos con precisión decimal (mínimo 3 decimales) que se puedan copiar y pegar directamente en la línea de comandos de AutoCAD para:
+
+                    Posicionar un centro de masa.
+
+                    Realizar un desplazamiento lineal de precisión.
+
+                    Definir un vector angular de desprendimiento en un surco de neumático.
+
+                    c. Contexto de Aplicación: Explica por qué la transición entre estos sistemas es obligatoria para validar la geometría de revolución y asegurar la repetibilidad en procesos de auditoría de calidad de componentes mecánicos.
+
+                    No utilices asteriscos para el formato . Formato negrita los titulos y subtitulos. El dictamen técnico final debe reforzar el uso de coordenadas absolutas, relativas y polares.`;
+                    break;
+                case 'escalas':
+                    refContent = `NORMATIVA DE ESCALAS (ISO 5455):
+                    Define y Compara el uso de escalas normalizadas según ISO 5455 (Ampliación, Natural y Reducción) bajo un contexto de inspección industrial y precisión mecánica. La respuesta debe seguir esta jerarquía técnica:
+                    Sigue estrictamente este protocolo:
+                    a. Define y Compara: Establece la diferencia técnica entre el uso de la Escala Natural (1:1) para validación por visión computacional frente a la Escala de Ampliación (ej. 5:1 o 10:1) para la detección de micro-fisuras o desgaste de banda de rodadura imperceptibles en escalas menores. Explica cómo la escala de reducción impacta en la incertidumbre de medida del plano de conjunto.
+
+                    b. Ejemplos de Sintaxis: Proporciona ejemplos de comandos que se puedan copiar y pegar directamente en la línea de comandos de AutoCAD para:
+
+                    Escalar un detalle de inspección manteniendo la precisión del nodo original (Comando SCALE).
+
+                    Configurar la escala de un Viewport en el Layout para una relación de reducción 1:2 (Sintaxis Z ...xp).
+
+                    Ajustar el factor de escala de anotación para que las cotas de precisión sean legibles en ampliaciones.
+
+                    c. Contexto de Aplicación: Orienta la respuesta hacia la auditoría de calidad, justificando por qué la selección de la escala es crítica para asegurar que la resolución del dibujo sea compatible con las tolerancias de fabricación (ej. ISO 2768).
+
+                    No utilices asteriscos para el formato. Formato negrita los titulos y subtitulos. El dictamen técnico final debe determinar el uso de escalas normalizadas según ISO 5455 (Ampliación, Natural y Reducción) bajo un contexto de inspección industrial y precisión mecánica`;
+                    break;
+                case 'graficacion':
+                    refContent = `ESTÁNDAR DE LÍNEAS Y GRAFICACIÓN (ISO 128):
+                    Define y Compara el uso de los tipos de línea normalizados según ISO 128 (Contornos Visibles, Aristas Ocultas y Ejes de Simetría) bajo un contexto estricto de inspección industrial y precisión mecánica. La respuesta debe seguir esta jerarquía técnica:
+                    Sigue estrictamente este protocolo:
+                    a. Define y Compara: Establece la diferencia técnica entre el uso de la Línea Continua Gruesa (0.70mm) para delimitar la masa física y límites de seguridad, frente a la Línea de Trazos Finos (0.25mm) para revelar cavidades internas y estructuras de refuerzo. Explica por qué la Línea de Trazo y Punto es el pilar para identificar centros de giro y excentricidades en piezas de revolución.
+
+                    b. Ejemplos de Sintaxis: Proporciona ejemplos de comandos que se puedan copiar y pegar directamente en la línea de comandos de AutoCAD para:
+
+                    Asignar un grosor de línea específico a una entidad o capa (Comando -LWEIGHT).
+
+                    Cargar y aplicar un tipo de línea interrumpida (Comando -LTYPE).
+
+                    Ajustar la escala de visualización del tipo de línea para que sea perceptible en planos de detalle (Variable LTSCALE).
+
+                    c. Contexto de Aplicación: Orienta la respuesta hacia la auditoría de calidad, justificando cómo una correcta jerarquía lineal previene errores críticos de interpretación en el mecanizado CNC y facilita la detección de inconsistencias geométricas en la inspección de neumáticos.
+
+                    No utilices asteriscos para el formato. Formato negrita los titulos y subtitulos. El dictamen técnico final debe certificar que el cumplimiento del estándar ISO 128 es indispensable para la firma de planos aptos para producción industrial.`;
+                    break;
+                case 'capas_bloques':
+                    refContent = `GESTIÓN DE CAPAS Y BLOQUES (CAD STANDARDS):
+                    Para optimizar la respuesta de la IA en tareas de inspección industrial y gestión de activos, el prompt debe exigir una estructura que vincule la organización del dibujo con la base de datos del proyecto (metadatos).
+
+                    Aquí tienes el prompt maestro diseñado para este caso:
+
+                    Prompt Maestro: Gestión Estructural y Trazabilidad (CAD Standards)
+                    Define y Compara el uso de Capas (Layers), Bloques (Blocks) y Atributos bajo un contexto de inspección industrial y precisión mecánica. La respuesta debe seguir esta jerarquía técnica:
+
+                    Sigue estrictamente este protocolo:
+                    a. Define y Compara: Establece la diferencia técnica entre el uso de Capas para el control de visibilidad y estados de inspección (ej. capas de diseño vs. capas de desgaste observado) frente al uso de Bloques con Atributos para la gestión de inventario técnico y trazabilidad de componentes. Explica por qué un bloque paramétrico es superior a la geometría simple en la estandarización de piezas de repuesto.
+
+                    b. Ejemplos de Sintaxis: Proporciona ejemplos de comandos que se puedan copiar y pegar directamente en la línea de comandos de AutoCAD para:
+
+                    Crear una capa con color y grosor específicos para inspección de profundidad (-LAYER).
+
+                    Definir un bloque con un punto base de inserción exacto en el centro de masa (BLOCK).
+
+                    Insertar un bloque normalizado con valores de atributos predefinidos para la huella de un neumático (INSERT).
+
+                    c. Contexto de Aplicación: Orienta la respuesta hacia la auditoría de calidad, justificando cómo la automatización mediante bloques y metadatos reduce el error humano en la generación de Listas de Materiales (BOM) y facilita el análisis de datos masivos en mantenimiento predictivo.
+
+                    No utilices asteriscos para el formato. Formato negrita los titulos y subtitulos. El dictamen técnico final debe validar si la estructura de capas y bloques propuesta permite una integración fluida con sistemas de gestión de activos e inspección automatizada.`;
+                                        break;
+                case 'dimensionamiento':
+                    refContent = `NORMATIVA DE ACOTADO Y DIMENSIONAMIENTO (ISO):
+                    Define y Compara el uso de los elementos de acotado según la normativa ISO (Líneas de Cota, Texto y Flechas) bajo un contexto de inspección industrial y precisión mecánica. La respuesta debe seguir esta jerarquía técnica:
+                    Sigue estrictamente este protocolo:        
+                    a. Define y Compara: Establece la diferencia técnica entre el acotado de Cotas Funcionales (críticas para el montaje y seguridad, ej. profundidad de banda) frente a las Cotas Auxiliares (informativas, entre paréntesis). Explica cómo el respeto a las distancias de separación (8-10mm) y la altura del texto (2.5-3.5mm) garantiza la legibilidad en entornos de taller y procesos de escaneo digital.
+
+                    b. Ejemplos de Sintaxis: Proporciona ejemplos de comandos que se puedan copiar y pegar directamente en la línea de comandos de AutoCAD para:
+
+                    Crear una cota lineal de precisión con un origen específico (Comando DIMLINEAR).
+
+                    Configurar el estilo de flecha cerrada y llena con proporción 3:1 (Variable DIMBLK y DIMASZ).
+
+                    Ajustar la ubicación del texto de cota para que permanezca siempre centrado y sobre la línea (Variable DIMTAD).
+
+                    c. Contexto de Aplicación: Orienta la respuesta hacia la auditoría de calidad, justificando por qué el sobre-dimensionamiento y la falta de jerarquía en las cotas derivan en ambigüedades de tolerancia que invalidan la certificación de una pieza mecánica.
+
+                    No utilices asteriscos para el formato. Formato negrita los titulos y subtitulos. El dictamen técnico final debe validar si el sistema de acotado propuesto facilita la programación de máquinas de medición por coordenadas (CMM) y asegura la repetibilidad de la inspección.`;
+                    break;
+            }
+            sendMessage(refContent);
+        }
+        
+        
+        async function visualAnalysis(type) {
+            const fileInput = document.getElementById('file-input');
+            if (fileInput.files.length === 0) {
+                alert("Primero debes adjuntar la imagen del plano CAD.");
+                return;
+            }
+
+            let hiddenMessage = "";
+            switch(type) {
+case 'comandos_base': 
+        hiddenMessage = `Sigue estrictamente este protocolo:
+        AUDITORÍA DE GEOMETRÍA BASE:        
+        1. Identificación: Hallar 5 comandos de DIBUJO (Draw) esenciales (LINE, CIRCLE, RECTANG, etc.).
+        2. Aplicación: Localizar la zona específica de la pieza donde se aplican estos comandos.
+        3. Justificación: Explicar por qué es la herramienta más eficiente para esta geometría.
+        4. Parámetros: Especificación con datos reales del plano (ej: CIRCLE Centro: 50,120 Radio: 15).
+        👉 DICTAMEN TÉCNICO: Evalúa si la construcción geométrica es óptima o si existen entidades redundantes que afecten la base del diseño.`; 
+        break;
+
+    case 'comandos_edicion': 
+        hiddenMessage = `Sigue estrictamente este protocolo:
+        AUDITORÍA DE EDICIÓN Y LIMPIEZA TÉCNICA:        
+        1. Comandos Críticos: Identificar comandos de MODIFICACIÓN (TRIM, FILLET, OFFSET).
+        2. Manufacturabilidad: Localizar redondeos técnicos y espesores constantes necesarios para producción.
+        3. Parámetros: Especificación con datos reales (ej: FILLET Radio: 5.0 para el mango).
+        👉 DICTAMEN TÉCNICO: Dictamina si la geometría está 'limpia' de excedentes y lista para procesos de mecanizado.`; 
+        break;
+
+    case 'comandos_anotacion': 
+        hiddenMessage = `Sigue estrictamente este protocolo:
+        AUDITORÍA DE ANOTACIÓN Y JERARQUÍA:        
+        1. Estándares: Detallar comandos de ANOTACIÓN y CAPAS (DIMLINEAR, LAYER, HATCH).
+        2. Legibilidad: Verificar que la jerarquía de líneas permita una lectura rápida en taller.
+        3. Parámetros: Especificación con datos del plano (ej: HATCH patrón ANSI31 para el corte).
+        👉 DICTAMEN TÉCNICO: Determina si la documentación gráfica cumple con los niveles de claridad profesional para evitar errores de interpretación.`; 
+        break;
+
+    case 'comandos_bloques': 
+        hiddenMessage = `Sigue estrictamente este protocolo:
+        AUDITORÍA DE ELEMENTOS NORMALIZADOS (BLOQUES):        
+        1. Identificación: Localizar elementos repetitivos (tornillos, cajetín, símbolos).
+        2. Optimización: Sugerir qué elementos deben ser bloques (BLOCK/INSERT).
+        3. Ventaja Técnica: Evaluar la eficiencia en el peso del archivo y edición paramétrica.
+        4. Parámetros: Datos del bloque (ej: BLOCK Nombre: Tornillo_Ajuste Punto_Base: Centro).
+        👉 DICTAMEN TÉCNICO: Certifica si el plano usa bibliotecas de componentes estándar para agilizar la gestión de repuestos y mantenimiento.`; 
+        break;
+
+    case 'cotas_iso': 
+        hiddenMessage = `Sigue estrictamente este protocolo:
+        AUDITORÍA DE DIMENSIONADO ISO:        
+        1. Análisis de Cotas: Diferenciar entre Cotas Funcionales y No Funcionales. Detectar sobrecotado.
+        2. Tolerancias Generales: Revisar cumplimiento de ISO 2768 (clase f, m, g, v).
+        3. Ejecución: Proporcionar sintaxis para corregir cotas omitidas (ej: DIMLINEAR 150,200).
+        👉 DICTAMEN TÉCNICO: Informa si la cadena de acotado es suficiente para la fabricación sin ambigüedades dimensionales.`; 
+        break;
+
+    case 'tolerancias_geometricas': 
+        hiddenMessage = `Sigue estrictamente este protocolo:
+        AUDITORÍA DE GD&T (ASME Y14.5 / ISO 1101):        
+        1. Control Espacial: Evaluar paralelismo, perpendicularidad y concentricidad.
+        2. Datums: Verificar el vínculo a superficies de referencia lógicas para montaje.
+        3. Acabados: Analizar coherencia de rugosidad (N6, N7) con el material.
+        4. Ejecución: Input de comando (ej: TOLERANCE en Punto Base: 40,60).
+        👉 DICTAMEN TÉCNICO: Valida si la pieza es intercambiable y funcionalmente apta para mecanismos de alta precisión.`; 
+        break;
+
+    case 'vistas_proyeccion': 
+        hiddenMessage = `Sigue estrictamente este protocolo:
+        AUDITORÍA DE SISTEMAS DE REPRESENTACIÓN:        
+        1. Normalización: Confirmar Sistema ISO E (Europeo) o ISO A (Americano).
+        2. Suficiencia: Determinar si faltan vistas auxiliares o detalles de escala.
+        3. Secciones: Evaluar rayados (HATCH) y correspondencia de aristas ocultas.
+        4. Ejecución: Script para generar vista de detalle (ej: ZOOM SCALE 2X).
+        👉 DICTAMEN TÉCNICO: Dictamina si la descripción espacial del objeto es completa y cumple con las normas de dibujo técnico industrial.`; 
+        break;
+
+    case 'auditoria_normas': 
+        hiddenMessage = `Sigue estrictamente este protocolo:
+        AUDITORÍA INTEGRAL DE CALIDAD E INGENIERÍA:        
+        1. Acabados (ISO 1302): Validar símbolos de rugosidad (Ra) para caras de contacto.
+        2. Estándares CAD: Auditar jerarquía de capas, grosores y estilos de línea.
+        3. Metadatos: Validar Escala, Unidades y firmas en el cajetín de rotulado.
+        4. Ejecución: Sintaxis para actualizar atributos (ej: -LAYER M Ejes C 1).
+        👉 DICTAMEN TÉCNICO FINAL: Evaluación final de conformidad: 'APTO PARA PRODUCCIÓN' o 'RECHAZADO POR OMISIONES NORMATIVAS CRÍTICAS'.`; 
+        break;
+
+// 1. Procesos y Acabados
+    case 'procesos_acabados': 
+        hiddenMessage = `Sigue estrictamente este protocolo:
+        AUDITORÍA DE PROCESOS Y ACABADOS:        
+        1. Rugosidad: Verificar Ra/Rz según ISO 1302 (¿Fundición N12 o Rectificado N1?).
+        2. Tratamientos: Validar dureza Rockwell HRC/Brinell HB en zonas de desgaste.
+        3. Soldadura: Revisar simbología de bisel y garganta efectiva.
+        👉 DICTAMEN TÉCNICO: Indica si el acabado garantiza la vida útil o qué tratamiento falta para cumplir la norma.`; 
+        break;
+
+    // 2. Lista de Materiales (BOM)
+    case 'bom_materiales': 
+        hiddenMessage = `Sigue estrictamente este protocolo:
+        AUDITORÍA DE GESTIÓN DE MATERIALES (BOM):        
+        a. Propiedades: Validar masa, centro de gravedad y tipo de material (ej. ASTM A36).
+        b. Stock: Calcular dimensiones del bloque bruto para mecanizado.
+        c. Trazabilidad: Verificar existencia de Part Numbers únicos.
+        👉 DICTAMEN TÉCNICO: Confirma si el material es apto para la función o define el código de parte faltante.`; 
+        break;
+
+    // 3. Ajustes e Interferencia
+    case 'ajustes_interferencia': 
+        hiddenMessage = `Sigue estrictamente este protocolo:
+        AUDITORÍA DE TOLERANCIAS Y AJUSTES:        
+        1. Colisiones: Ejecutar detección de interferencias 3D en el ensamblaje.
+        2. Ajustes ISO: Validar sistema de agujero/eje (H7/g6, P7) según función.
+        3. Cadenas: Verificar que el acumulado de tolerancias no bloquee el montaje.
+        👉 DICTAMEN TÉCNICO: Identifica piezas en colisión o el ajuste exacto necesario para un montaje profesional.`; 
+        break;
+
+    // 4. GD&T (Tolerancias Geométricas)
+    case 'gdt_tolerancias': 
+        hiddenMessage = `Sigue estrictamente este protocolo:
+        AUDITORÍA DE PRECISIÓN GEOMÉTRICA (ASME Y14.5):        
+        a. Forma/Orientación: Revisar planicidad, cilindricidad y paralelismo.
+        b. Localización: Verificar posición verdadera de agujeros para pernería.
+        c. MMC: Optimizar según Condición de Máximo Material.
+        👉 DICTAMEN TÉCNICO: Determina si la pieza es funcionalmente aceptable o qué tolerancia geométrica debe corregirse.`; 
+        break;
+
+    // 5. DFM (Diseño para Manufactura)
+    case 'dfm_manufacturabilidad': 
+        hiddenMessage = `Sigue estrictamente este protocolo:
+        AUDITORÍA DE MANUFACTURABILIDAD (DFM):        
+        1. Herramental: Detectar esquinas vivas internas y accesibilidad de fresa/broca.
+        2. Desmoldeo: Validar ángulos de salida (Draft Angles) para fundición.
+        3. Paredes: Verificar espesores mínimos para evitar fallas estructurales.
+        👉 DICTAMEN TÉCNICO: Dictamina si la pieza es fabricable a bajo costo o si presenta una 'geometría imposible'.`; 
+        break;
+
+    // 6. Ensamblaje y Sujeción
+    case 'ensamblaje_sujecion': 
+        hiddenMessage = `Sigue estrictamente este protocolo:
+        AUDITORÍA DE ENSAMBLAJE Y SUJECIÓN:        
+        a. Uniones: Validar pernería según norma ISO/DIN/ANSI.
+        b. Secuencia: Analizar orden lógico de armado para evitar bloqueos.
+        c. Ergonomía: Verificar espacio para herramientas de montaje (llaves/pistolas).
+        👉 DICTAMEN TÉCNICO: Confirma si el ensamblaje es viable o especifica los elementos de unión faltantes.`; 
+        break;
+
+    // 7. Marcado y Normativa
+    case 'normativa_trazabilidad': 
+        hiddenMessage = `Sigue estrictamente este protocolo:
+        AUDITORÍA DE NORMATIVA Y ROTULACIÓN:        
+        1. Trazabilidad: Definir zonas de grabado láser o troquelado técnico.
+        2. Cajetín: Validar escala, unidades y tipo de proyección (1er vs 3er Diedro).
+        3. ISO 128: Revisar jerarquía de capas, grosores de línea y acotado.
+        👉 DICTAMEN TÉCNICO: Informa si el plano está listo para producción o qué error normativo impide su firma.`; 
+        break;
+
+
+                    
+            }
+            sendMessage(hiddenMessage);
+        }
+
+        async function sendMessage(customMessage = null) {
+            const input = document.getElementById('user-input');
+            const fileInput = document.getElementById('file-input');
+            const message = customMessage || input.value.trim();
+            
+            //const message = customMessage;            
+            const message_input = input.value.trim();            
+            const hasFile = fileInput.files.length > 0;
+
+            if (!message && !hasFile) return;
+
+            const chatBox = document.getElementById('chat-box');
+            let userHtml = `<div class="flex justify-end gap-2 items-start"><div class="bg-slate-700 text-white p-3.5 rounded-xl rounded-tr-none shadow-md max-w-[80%] italic text-sm font-medium">`;
+            if (hasFile) userHtml += `<img src="${document.getElementById('img-preview').src}" class="max-h-40 rounded-lg mb-2 border border-slate-500 shadow">`;
+            if (customMessage) userHtml += `<span class="text-[11px] text-slate-300 font-bold uppercase">[Análisis Técnico Especializado]</span><br>`;
+            //userHtml += `${message}</div><img src="https://api.dicebear.com/7.x/bottts/svg?seed=Juan" class="w-8 h-8 rounded-full bg-slate-200 p-1"></div>`;
+            userHtml += `${message_input}</div><img src="https://api.dicebear.com/7.x/bottts/svg?seed=Juan" class="w-8 h-8 rounded-full bg-slate-200 p-1"></div>`;
+            
+            chatBox.innerHTML += userHtml;
+            input.value = "";
+            const currentFile = fileInput.files[0];
+            clearImage();
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            const formData = new FormData();
+            formData.append('user_id', userId);
+            formData.append('message', message);
+            if (currentFile) formData.append('image', currentFile);
+
+            try {
+                //const response = await fetch('http://127.0.0.1:8000/chat', { method: 'POST', body: formData });
+                //const response = await fetch('https://curly-space-lamp-wvrp76jq9qwp2v9gg-8000.app.github.dev/chat', { method: 'POST', body: formData });
+                const response = await fetch('https://curly-space-lamp-wvrp76jq9qwp2v9gg-8000.app.github.dev/chat', { 
+    method: 'POST', 
+    headers: {
+        // Esta cabecera le dice a ngrok: "Oye, sé lo que hago, no me muestres la pantalla de advertencia"
+        'ngrok-skip-browser-warning': 'true'
+    },
+    body: formData 
+});
+                const data = await response.json();
+                chatBox.innerHTML += `
+                    <div class="flex items-start gap-3">
+                        <div class="bg-blue-600 text-white p-2 rounded-lg text-xs font-bold">TB+</div>
+                        <div class="bg-white text-slate-800 p-5 rounded-xl rounded-tl-none border border-slate-200 shadow-md max-w-[85%] prose prose-slate text-sm">
+                            ${marked.parse(data.response)}
+                        </div>
+                    </div>`;
+                updateStats();
+                chatBox.scrollTop = chatBox.scrollHeight;
+            } catch (error) {
+                alert("Error de conexión.");
+            }
+        }
+        updateStats();
+    </script>
+</body>
+</html>
