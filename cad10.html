@@ -223,8 +223,8 @@
 
         async function updateStats() {
             try {
-                //const res = await fetch(`http://127.0.0.1:8000/stats/${userId}`);
-                const res = await fetch(`https://curly-space-lamp-wvrp76jq9qwp2v9gg-8000.app.github.dev/${userId}`);
+                //const res = await fetch(`http://127.0.0.1:8010/stats/${userId}`);
+                const res = await fetch(`https://curly-space-lamp-wvrp76jq9qwp2v9gg-8010.app.github.dev/${userId}`);
                 const data = await res.json();
                 document.getElementById('user-xp').innerText = `${data.xp} XP`;
                 document.getElementById('user-level').innerText = data.level;
